@@ -1,0 +1,34 @@
+#HF = /home/nmimura/shared
+
+#MPI     = $(HF)/openmpi-3.0.0-build
+#MPI_BIN = $(MPI)/bin
+#MPI_INC = $(MPI)/include
+#MPI_LIB = $(MPI)/lib
+
+SPECTRUM     = /opt/ibm/spectrum_mpi
+SPECTRUM_BIN = $(SPECTRUM)/bin
+SPECTRUM_INC = $(SPECTRUM)/include
+SPECTRUM_LIB = $(SPECTRUM)/lib
+
+MPI = $(SPECTRUM)
+
+#CUDA     = /usr/local/cuda-9.1
+CUDA	 = /shared/opt/cuda/cuda-9.1
+CUDA_BIN = $(CUDA)/bin
+CUDA_INC = $(CUDA)/include
+CUDA_LIB = $(CUDA)/lib64
+
+#CUDA2	  = $(HF)/cuda
+#CUDA2_INC = $(CUDA2)/include
+#CUDA2_LIB = $(CUDA2)/lib
+
+CC          = gcc
+CXX         = g++
+MPICC       = $(MPI_BIN)/mpicc
+MPICXX      = $(MPI_BIN)/mpic++
+MPIRUN      = $(MPI_BIN)/mpirun
+SPECTRUMCC  = $(SPECTRUM_BIN)/mpicc
+SPECTRUMCXX = $(SPECTRUM_BIN)/mpic++
+SPECTRUMRUN = $(SPECTRUM_BIN)/mpirun
+NVCC        = $(CUDA_BIN)/nvcc
+
