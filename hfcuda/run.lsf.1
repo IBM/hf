@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# check arguments
+if [ $# -ne 3 ]; then
+    echo "[run] error: missing arguments"
+    echo "usage: $0 bin len"
+    echo "  bin: binary to run"
+    echo "  len: matrix length"
+    echo "  dev: number of visible devices"
+    exit 1
+fi
+
+# parse arguments
+bin=$1
+len=$2
+dev=$3
+
+# get path friendly name of binary
+binf=$(basename ${bin})
+
+# determine last device of list
+last=$((dev-1))
+    
+bsub << EOF
+    #BSUB -n 44
+    #BSUB -R "span[ptile=44]"
+    #BSUB -R "rusage[ngpus_shared=4]"
+    #BSUB -env "LSF_SMT=off"
+    #BSUB -q excl
+    #BSUB -o ${binf}__${len}__${dev}__%J.out
+
+    function sep() {
+        echo
+        printf '%40s\n' | tr ' ' -
+        echo
+    }
+
+    # set list of visible devices
+    export CUDA_VISIBLE_DEVICES=$(seq -s , 0 $last)
+
+    # print experiment info
+    sep
+    echo "bin: ${bin}"
+    echo "len: ${len}"
+    echo "dev: ${dev}"
+    echo "CUDA_VISIBLE_DEVICES=\${CUDA_VISIBLE_DEVICES}"
+    
+    # show some additional info
+    sep
+    env
+    sep
+    ppc64_cpu --smt
+    sep
+
+    # run experiment
+    cmd="${bin} ${len}"
+    echo \${cmd}
+    eval \${cmd}
+EOF
+
